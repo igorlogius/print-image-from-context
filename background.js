@@ -19,19 +19,39 @@ browser.menus.create({
                         styleSheet = styleSheets[i];
                         styleSheet.disabled = true;
                     }
-                    document.body.innerHTML = '<img src="${info.srcUrl}" />';
-                    window.print();
+                    document.body.innerHTML = '<img id="printimg" />';
+                    let img = document.getElementById('printimg');
 
-                    /* restore html first, because it can contain style tags */
-                    document.body.innerHTML = bodyHTML;
+                    img.onerror = function() {
+                        document.body.innerHTML = bodyHTML;
 
-                    styleSheets = document.styleSheets;
-                    styleSheetsNo = styleSheets.length;
+                        styleSheets = document.styleSheets;
+                        styleSheetsNo = styleSheets.length;
 
-                    for (i=0; i < styleSheetsNo; i++) {
-                        styleSheet = styleSheets[i];
-                        styleSheet.disabled = false;
+                        for (i=0; i < styleSheetsNo; i++) {
+                            styleSheet = styleSheets[i];
+                            styleSheet.disabled = false;
+                        }
+
+                        alert('Error Loading Image');
                     }
+                    img.onload = function(){
+                        window.print();
+
+                        document.body.innerHTML = bodyHTML;
+
+                        styleSheets = document.styleSheets;
+                        styleSheetsNo = styleSheets.length;
+
+                        for (i=0; i < styleSheetsNo; i++) {
+                            styleSheet = styleSheets[i];
+                            styleSheet.disabled = false;
+                        }
+                    }
+                    // set src
+                    img.src = "${info.srcUrl}";
+
+
                 }());
             `
         });
