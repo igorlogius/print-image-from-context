@@ -10,33 +10,21 @@ browser.menus.create({
         browser.tabs.executeScript({
             code:`
                 (function (){
-                    const bodyHTML = document.body.innerHTML;
+                    let htmlElement = document.getElementsByTagName("html")[0];
 
-                    function setBody(html,disabled_styles){
+                    const oldHTML = htmlElement.innerHTML;
 
-                        document.body.innerHTML = html;
-
-                        let i, styleSheet;
-                        const styleSheets = document.styleSheets;
-                        const styleSheetsNo = styleSheets.length;
-
-                        for (i=0; i < styleSheetsNo; i++) {
-                            styleSheet = styleSheets[i];
-                            styleSheet.disabled = disabled_styles;
-                        }
-                    }
-
-                    setBody('<img id="printimg" />',true);
+                    htmlElement.innerHTML = '<head/><body><img id="printimg" /></body>';
 
                     let img = document.getElementById('printimg');
 
                     img.onerror = function() {
-                        setBody(bodyHTML,false);
+                        htmlElement.innerHTML = oldHTML;
                         alert('Error Loading Image');
                     }
                     img.onload = function(){
                         window.print();
-                        setBody(bodyHTML,false);
+                        htmlElement.innerHTML = oldHTML;
                     }
                     img.src = "${info.srcUrl}";
                 }());
