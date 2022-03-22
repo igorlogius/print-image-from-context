@@ -11,47 +11,34 @@ browser.menus.create({
             code:`
                 (function (){
                     const bodyHTML = document.body.innerHTML;
-                    let i, styleSheet, styleSheets, styleSheetsNo;
-                    styleSheets = document.styleSheets;
-                    styleSheetsNo = styleSheets.length;
 
-                    for (i=0; i < styleSheetsNo; i++) {
-                        styleSheet = styleSheets[i];
-                        styleSheet.disabled = true;
-                    }
-                    document.body.innerHTML = '<img id="printimg" />';
-                    let img = document.getElementById('printimg');
+                    function setBody(html,disabled_styles){
 
-                    img.onerror = function() {
-                        document.body.innerHTML = bodyHTML;
+                        document.body.innerHTML = html;
 
-                        styleSheets = document.styleSheets;
-                        styleSheetsNo = styleSheets.length;
+                        let i, styleSheet;
+                        const styleSheets = document.styleSheets;
+                        const styleSheetsNo = styleSheets.length;
 
                         for (i=0; i < styleSheetsNo; i++) {
                             styleSheet = styleSheets[i];
-                            styleSheet.disabled = false;
+                            styleSheet.disabled = disabled_styles;
                         }
+                    }
 
+                    setBody('<img id="printimg" />',true);
+
+                    let img = document.getElementById('printimg');
+
+                    img.onerror = function() {
+                        setBody(bodyHTML,false);
                         alert('Error Loading Image');
                     }
                     img.onload = function(){
                         window.print();
-
-                        document.body.innerHTML = bodyHTML;
-
-                        styleSheets = document.styleSheets;
-                        styleSheetsNo = styleSheets.length;
-
-                        for (i=0; i < styleSheetsNo; i++) {
-                            styleSheet = styleSheets[i];
-                            styleSheet.disabled = false;
-                        }
+                        setBody(bodyHTML,false);
                     }
-                    // set src
                     img.src = "${info.srcUrl}";
-
-
                 }());
             `
         });
