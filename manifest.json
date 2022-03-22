@@ -12,8 +12,10 @@
     "manifest_version": 2,
     "name": "print-image-from-context",
     "permissions": [
-        "activeTab",
-        "menus"
+        "menus",
+        "tabs",
+        "cookies",
+        "<all_urls>"
     ],
-    "version": "1.1.2"
+    "version": "1.2.0"
 }
