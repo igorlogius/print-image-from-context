@@ -6,17 +6,34 @@ browser.menus.create({
     title: "Print Image",
     documentUrlPatterns: ["<all_urls>"],
     contexts: ["image"],
-    onclick: async function (info,tab) {
-            const imgtab = await browser.tabs.create({
-                url: info.srcUrl,
-                active: true
-            });
-            browser.tabs.executeScript(imgtab.id, {
-                code: `(function () {
+    onclick: async (info,tab) => {
+        browser.tabs.executeScript({
+            code:`
+                (function (){
+                    const bodyHTML = document.body.innerHTML;
+                    let i, styleSheet, styleSheets, styleSheetsNo;
+                    styleSheets = document.styleSheets;
+                    styleSheetsNo = styleSheets.length;
+
+                    for (i=0; i < styleSheetsNo; i++) {
+                        styleSheet = styleSheets[i];
+                        styleSheet.disabled = true;
+                    }
+                    document.body.innerHTML = '<img src="${info.srcUrl}" />';
                     window.print();
-                    window.close();
-                }());`
-            });
+
+                    /* restore html first, because it can contain style tags */
+                    document.body.innerHTML = bodyHTML;
+
+                    styleSheets = document.styleSheets;
+                    styleSheetsNo = styleSheets.length;
+
+                    for (i=0; i < styleSheetsNo; i++) {
+                        styleSheet = styleSheets[i];
+                        styleSheet.disabled = false;
+                    }
+                }());
+            `
+        });
     }
 });
-

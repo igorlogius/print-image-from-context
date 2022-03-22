@@ -1,20 +1,19 @@
 {
-  "author": "igorlogius",
-  "background": {
-    "scripts": [
-      "background.js"
-    ]
-  },
-  "description": "print images directly from the context menu",
-  "icons": {
-    "256": "icon.png"
-  },
-  "manifest_version": 2,
-  "name": "print-image-from-context",
-  "permissions": [
-    "tabs",
-	"menus",
-    "<all_urls>"
-  ],
-  "version": "1.0.1"
+    "author": "igorlogius",
+    "background": {
+        "scripts": [
+            "background.js"
+        ]
+    },
+    "description": "print images directly from the context menu",
+    "icons": {
+        "256": "icon.png"
+    },
+    "manifest_version": 2,
+    "name": "print-image-from-context",
+    "permissions": [
+        "activeTab",
+        "menus"
+    ],
+    "version": "1.1.0"
 }
