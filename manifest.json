@@ -5,12 +5,12 @@
             "background.js"
         ]
     },
-    "description": "print images directly from the context menu",
+    "description": "Print any image directly from the context menu",
     "icons": {
         "256": "icon.png"
     },
     "manifest_version": 2,
-    "name": "print-image-from-context",
+    "name": "Print Image from Context",
     "permissions": [
         "menus",
         "tabs",
